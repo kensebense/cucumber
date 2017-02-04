@@ -7,16 +7,19 @@ import java.util.List;
 
 public class OrdersRestHelper {
 
-    @Inject
-    private OrdersTestSession ordersTestSession;
 
-    public void login(String userName) {
-        UserCredentials credentials = new UserCredentials(userName, "abc");
-        ordersTestSession.setUserCredentials(credentials);
+    @Inject
+    private LoggerHelper loggerHelper;
+
+    private OrderDTO orderDTO;
+
+    public void login(UserCredentials credentials) {
+
+        loggerHelper.getLogger().info(String.format("Logged in with username %s", credentials.getUsername()));
     }
 
     public OrderDTO getOrder() {
-        return ordersTestSession.getOrderDTO();
+        return this.orderDTO;
     }
 
     public List<OrderDTO> requestOrders() {
@@ -24,9 +27,10 @@ public class OrdersRestHelper {
         return null;
     }
 
-    public void requestDraftOrder() {
+    public OrderDTO requestDraftOrder() {
 
-        ordersTestSession.setOrder(new OrderDTO());
+        this.orderDTO = new OrderDTO();
+        return getOrder();
     }
 
     public void addPartToOrder(Long partNumber) {
@@ -39,9 +43,8 @@ public class OrdersRestHelper {
             quantity = 1L;
         }
 
-        // Get hold of the draft order in test session
-        OrderDTO orderDTO = ordersTestSession.getOrderDTO();
         orderDTO.getPartIds().add(partNumber);
 
+        loggerHelper.getLogger().info(String.format("Added part %s to order", partNumber));
     }
 }

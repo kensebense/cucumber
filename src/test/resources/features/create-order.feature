@@ -7,7 +7,7 @@ Feature: Create order
 
     A common user who wants to create orders has the role of an orderer.
 
-    Given I am logged in as "00446"
+    Given I am logged in as "crew"
 
   Scenario: Create a new order and add parts
     Given In my shopping cart I have an order in status draft
