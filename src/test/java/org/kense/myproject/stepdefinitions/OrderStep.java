@@ -42,6 +42,9 @@ public class OrderStep {
 
         partsList.forEach(restHelper::addPartToOrder);
         ordersTestSession.setOrder(restHelper.getOrder());
+
+        // just testing selenium here
+        ordersTestSession.setCheeseResult(restHelper.searchForCheese());
     }
 
     @Then("^the order should be displayed having (\\d+) orderlines with the parts$")
@@ -49,5 +52,7 @@ public class OrderStep {
         OrderDTO orderDTO = ordersTestSession.getOrderDTO();
         assertThat(orderDTO.getPartIds().size(), is(numberOfLines));
         assertThat(orderDTO.getPartIds(), is(expectedPartList));
+
+        assertThat(ordersTestSession.getCheeseResult(), is("Page title is: Cheese! - Sök på Google"));
     }
 }
