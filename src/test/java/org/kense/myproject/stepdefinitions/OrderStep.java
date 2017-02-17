@@ -21,7 +21,7 @@ import static org.hamcrest.core.Is.is;
 public class OrderStep {
 
     @Inject
-    private OrdersRestHelper restHelper;
+    private OrdersRestHelper ordersRestHelper;
 
     @Inject
     private OrdersTestSession ordersTestSession;
@@ -29,30 +29,26 @@ public class OrderStep {
     @Given("^I am logged in as \"([^\"]*)\"$")
     public void iAmLoggedInAs(@Transform(RoleToUserCredentialsConverter.class) UserCredentials credentials) throws Throwable {
         ordersTestSession.setUserCredentials(credentials);
-        restHelper.login(credentials);
+        ordersRestHelper.login(credentials);
     }
 
     @Given("^In my shopping cart I have an order in status draft$")
     public void inMyShoppingCartIHaveAnOrderInStatusDraft() throws Throwable {
-        ordersTestSession.setOrder(restHelper.requestDraftOrder());
+        ordersTestSession.setOrderDTO(ordersRestHelper.requestDraftOrder());
     }
 
     @When("^I add these parts to the order and saves it$")
     public void iAddThesePartsToTheOrderAndSavesIt(List<Long> partsList) throws Exception {
 
-        partsList.forEach(restHelper::addPartToOrder);
-        ordersTestSession.setOrder(restHelper.getOrder());
-
-        // just testing selenium here
-        ordersTestSession.setCheeseResult(restHelper.searchForCheese());
+        partsList.forEach(ordersRestHelper::addPartToOrder);
+        ordersTestSession.setOrderDTO(ordersRestHelper.getOrder());
     }
 
     @Then("^the order should be displayed having (\\d+) orderlines with the parts$")
     public void theOrderShouldBeDisplayedHavingOrderlinesWithTheParts(int numberOfLines, List<Long> expectedPartList) throws Throwable {
         OrderDTO orderDTO = ordersTestSession.getOrderDTO();
+
         assertThat(orderDTO.getPartIds().size(), is(numberOfLines));
         assertThat(orderDTO.getPartIds(), is(expectedPartList));
-
-        assertThat(ordersTestSession.getCheeseResult(), is("Page title is: Cheese! - Sök på Google"));
     }
 }

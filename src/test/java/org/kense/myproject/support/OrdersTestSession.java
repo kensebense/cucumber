@@ -6,9 +6,7 @@ public class OrdersTestSession extends TestSession {
 
     private OrderDTO orderDTO;
 
-    private String cheeseResult;
-
-    public void setOrder(OrderDTO orderDTO) {
+    public void setOrderDTO(OrderDTO orderDTO) {
         this.orderDTO = orderDTO;
     }
 
@@ -16,11 +14,4 @@ public class OrdersTestSession extends TestSession {
         return orderDTO;
     }
 
-    public String getCheeseResult() {
-        return cheeseResult;
-    }
-
-    public void setCheeseResult(String cheeseResult) {
-        this.cheeseResult = cheeseResult;
-    }
 }
